@@ -9,6 +9,10 @@ class AuthController extends Controller
 {
     public $loginAfterSignUp = true;
 
+    public function __construct(){
+      $this->middleware('auth:api',['except'=>['login','register']]);
+    }
+
     public function register(Request $request)
     {
       $user = User::create([
