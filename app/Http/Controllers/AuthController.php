@@ -15,6 +15,16 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+      $this->validate($request, [
+        'name' => 'required|string',
+        'surname' => 'required|string',             
+        'email' =>  'required|unique:users',
+        'phone_number' => 'required|unique:users|max:12',
+        'gender'  => 'required',
+        'role_id' => 'required|integer',        
+        'password' => 'required',
+      ]);
+
       $user = User::create([
         'name' => $request->name,
         'surname' => $request->surname,              
@@ -24,6 +34,10 @@ class AuthController extends Controller
         'role_id' => $request->role_id,         
         'password' => bcrypt($request->password)
       ]);
+      
+      if($user->errors){
+        return response()->json($user, 201);
+      }
 
       $token = auth()->login($user);
 
