@@ -21,8 +21,9 @@ class AuthController extends Controller
         'email' =>  'required|unique:users',
         'phone_number' => 'required|unique:users|max:12',
         'gender'  => 'required',
-        'role_id' => 'required|integer',        
-        'password' => 'required',
+        'role_id' => 'required',        
+        'password' => 'min:6|required_with:pass_confirm|same:pass_confirm',
+        'pass_confirm' => 'min:6'
       ]);
 
       $user = User::create([
@@ -49,7 +50,7 @@ class AuthController extends Controller
       $credentials = $request->only(['email', 'password']);
 
       if (!$token = auth()->attempt($credentials)) {
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return response()->json(['errors' => 'Unauthorized'], 401);
       }
 
       return $this->respondWithToken($token);
