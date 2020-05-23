@@ -89,9 +89,13 @@ class FarmsController extends Controller
      * @param  \App\farms  $farms
      * @return \Illuminate\Http\Response
      */
-    public function show(farms $farms)
+    public function show($id)
     {
-        //
+        $farmToFind  = farms::find($id);
+        if( empty($farmToFind) ){
+          return response()->json(['message'=>' no farm with id provided.'],404 );   
+        }
+        return  response()->json($farmToFind, 201);
     }
 
     /**
