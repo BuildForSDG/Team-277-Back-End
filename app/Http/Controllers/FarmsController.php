@@ -86,39 +86,74 @@ class FarmsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\farms  $farms
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $farmToFind  = farms::find($id);
+        $farmToFind  = farms::find($id)->with('address')->get();
         if( empty($farmToFind) ){
           return response()->json(['message'=>' no farm with id provided.'],404 );   
         }
         return  response()->json($farmToFind, 201);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\farms  $farms
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(farms $farms)
-    {
-        //
-    }
+  
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\farms  $farms
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, farms $farms)
+    public function update(Request $request)
     {
-        //
+      $this->validate($request, [
+        'id' => 'required|string',
+        'name' => 'required|string',
+        'description' => 'required|string',             
+        'size' =>  'required|string',
+        'street' => 'required|string',
+        'suburb'  => 'required|string',
+        'post_code'  => 'required|string',
+        'city_id' => 'required|integer',        
+        'country_id' => 'required|integer',
+        'monthly_income' => 'string',
+        'gio_location' => 'string',
+        'category_id' => 'required|string',
+        'address_id' => 'required|string'
+      ]);
+
+      // first get the address of the farm and update the farm
+      $addressToUpdate = address::find($request->address_id);
+      $addressToUpdate->street1 = $request->street;
+      $addressToUpdate->suburb = $request->suburb;
+      $addressToUpdate->city_id =  $request->city_id;
+      $addressToUpdate->country_id =  $request->country_id;
+      $addressToUpdate->post_code = $request->post_code;
+      $addressToUpdate->save();
+    
+      // when address creation fails , return an error message
+      if($addressToUpdate->errors ||  empty($addressToUpdate)){
+        return response()->json($addressToUpdate, 424);
+      }
+      // get the farm  corresponding to the if provided
+      $farmToUpdate = farms::find( $request->id);
+      if(empty( $farmToUpdate)){
+        return response()->json(['message'=>' no farm with id provided.'],404 );
+      }
+      $farmToUpdate->name = $request->name;
+      $farmToUpdate->description = $request->description;
+      $farmToUpdate->size =  $request->size;
+      $farmToUpdate->monthly_income = $request->monthly_income;
+      $farmToUpdate->gio_location =  $request->gio_location;
+      $farmToUpdate->address_id = $address->id;
+      $farmToUpdate->category_id =  $request->category_id;
+      $farmToUpdate->user_id = auth::user()->id;
+      $farmToUpdate->save();
+
+      return  response()->json( $farmToUpdate, 201);
+
     }
 
     /**
@@ -129,6 +164,6 @@ class FarmsController extends Controller
      */
     public function destroy(farms $farms)
     {
-        //
+        
     }
 }

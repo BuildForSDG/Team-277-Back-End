@@ -18,20 +18,20 @@ class farms extends Model
     */
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('App\User', 'id');
     }
     /**
      * Get adddress that belong to the farm
      */
     public function address()
     {
-        return $this->belongsTo('App\address', 'address_id');
+        return $this->hasMany('App\address', 'id');
     }
     /**
      *  get the Category tha  belong to the farms
      */
     public function category()
     {
-        return $this->belongsTo('App\Category', 'category_id');
+        return $this->belongsTo('App\Category', 'id');
     }
 }
