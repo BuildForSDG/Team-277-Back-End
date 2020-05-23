@@ -126,12 +126,13 @@ class FarmsController extends Controller
 
       // first get the address of the farm and update the farm
       $addressToUpdate = address::find($request->address_id);
-      $addressToUpdate->street1 = $request->street;
-      $addressToUpdate->suburb = $request->suburb;
-      $addressToUpdate->city_id =  $request->city_id;
-      $addressToUpdate->country_id =  $request->country_id;
-      $addressToUpdate->post_code = $request->post_code;
-      $addressToUpdate->save();
+      $addressToUpdate->update([
+        'street1' => $request->street,
+        'suburb' => $request->suburb,
+        'city_id '=>  $request->city_id,
+        'country_id' =>  $request->country_id,
+        'post_code' => $request->post_code
+      ]);
     
       // when address creation fails , return an error message
       if($addressToUpdate->errors ||  empty($addressToUpdate)){
@@ -143,16 +144,18 @@ class FarmsController extends Controller
         return response()->json(['message'=>' no farm with id provided.'],404 );
       }
       $farmToUpdate->name = $request->name;
-      $farmToUpdate->description = $request->description;
-      $farmToUpdate->size =  $request->size;
-      $farmToUpdate->monthly_income = $request->monthly_income;
-      $farmToUpdate->gio_location =  $request->gio_location;
-      $farmToUpdate->address_id = $address->id;
-      $farmToUpdate->category_id =  $request->category_id;
-      $farmToUpdate->user_id = auth::user()->id;
-      $farmToUpdate->save();
+      $farmToUpdate->update([
+        'description' => $request->description,
+        'size' =>  $request->size,
+        'monthly_income' => $request->monthly_income,
+        'gio_location' =>  $request->gio_location,
+        'address_id' =>  $addressToUpdate->id,
+        'category_id' =>  $request->category_id,
+        'user_id' => auth::user()->id
+    ]);
+     $updatedFarm = ["farm"=> $farmToUpdate, "address"=> $addressToUpdate];
 
-      return  response()->json( $farmToUpdate, 201);
+      return  response()->json( $updatedFarm, 201);
 
     }
 
