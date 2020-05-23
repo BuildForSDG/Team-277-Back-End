@@ -44,7 +44,7 @@ return [
         'api' => [
             'driver' => 'jwt',
             'provider' => 'users',
-            'hash' => true,
+            'hash' => false, // true
         ],
     ],
 
@@ -96,8 +96,8 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',
-            'expire' => 60,
-            'throttle' => 60,
+            'expire' => 10800, //60
+            'throttle' => 60, //60
         ],
     ],
 

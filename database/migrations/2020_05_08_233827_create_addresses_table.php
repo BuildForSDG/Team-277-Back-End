@@ -17,7 +17,7 @@ class CreateAddressesTable extends Migration
             $table->bigIncrements('id');
             $table->string('street1');
             $table->string('street2');
-            $table->string('surburb');
+            $table->string('suburb');
             $table->bigInteger('city_id')->unsigned();
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
             $table->bigInteger('country_id')->unsigned();
