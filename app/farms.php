@@ -32,6 +32,14 @@ class farms extends Model
      */
     public function category()
     {
-        return $this->belongsTo('App\Category', 'id');
+        return $this->belongsTo('App\category', 'id');
+    }
+
+    /**
+     * Get adddress that belong to the farm
+     */
+    public function products()
+    {
+        return $this->hasMany('App\products');
     }
 }

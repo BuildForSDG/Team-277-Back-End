@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\products;
+use Auth;
+use App\farms;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -35,8 +37,8 @@ class ProductsController extends Controller
         $this->validate($request, [
             'name' => 'required|string',
             'description' => 'required|string',             
-            'quantity' =>  'required|int',
-            'price' => 'required|numeric',
+            'quantity' =>  'required|string',
+            'price' => 'required|string',
             'farm_id'  => 'required|string',
             'category_id'  => 'required|string',
             'measurement_id' => 'required|string',          
@@ -51,10 +53,11 @@ class ProductsController extends Controller
             'price' =>  $request->price,
             'category_id'  => $request->category_id,
             'farm_id' =>  $request->farm_id,
-            'measurement_id'  => $request->measurement_id
+            'measurement_units_id'  => $request->measurement_id,
+            'isAvailable' => 1
           ]);
 
-          if($newFarm->errors){
+          if($newProduct->errors){
             return response()->json($newProduct, 424);
           }
  
@@ -91,8 +94,8 @@ class ProductsController extends Controller
             'productId' => 'required|int',
             'name' => 'required|string',
             'description' => 'required|string',             
-            'quantity' =>  'required|int',
-            'price' => 'required|numeric',
+            'quantity' =>  'required|string',
+            'price' => 'required|string',
             'farm_id'  => 'required|string',
             'category_id'  => 'required|string',
             'measurement_id' => 'required|string',          

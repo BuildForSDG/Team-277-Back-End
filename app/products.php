@@ -8,7 +8,7 @@ class products extends Model
 {
     protected $fillable = [
         'name','description','quantity','price','isAvailable','image','farm_id',
-        'measurement_id',
+        'measurement_units_id',
         'category_id'
     ];
     
@@ -16,9 +16,9 @@ class products extends Model
     /*
     * Get  farm 
     */
-    public function farm()
+    public function farms()
     {
-        return $this->belongsTo('App\farms', 'id');
+        return $this->belongsTo('App\farms', 'farm_id', 'id');
     }
     
     /**
