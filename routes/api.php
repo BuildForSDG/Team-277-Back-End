@@ -23,5 +23,9 @@ Route::group(['middleware'=>'api','prefix' => 'auth'], function($router){
     Route::get('user', 'AuthController@getAuthUser');
    
 });
+
+Route::group(['middleware'=>'api','prefix' => 'api'], function($router){
+    Route::apiResource('products', 'ProductsController');
+});
    
 
