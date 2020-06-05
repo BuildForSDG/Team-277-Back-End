@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 
+$DATABASE_URL=parse_url('postgres://qerlaryaycfrzc:37f35fd155d5eed7811ad8a84660e0a8a3f08f1f7fac3df1c1ea618928d6e82a@ec2-35-169-254-43.compute-1.amazonaws.com:5432/dbh9a3eiojl01h');
 return [
 
     /*
@@ -12,10 +13,10 @@ return [
     | Here you may specify which of the database connections below you wish
     | to use as your default connection for all database work. Of course
     | you may use many connections at once using the Database library.
-    |
+    | default' => env('DB_CONNECTION', 'mysql')
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'pgsql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,8 +53,8 @@ return [
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
+            'charset' => 'utf8', //'utf8mb4'
+            'collation' => 'utf8_general_ci', /// 'utf8mb4_unicode_ci'
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
@@ -65,12 +66,12 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'url' =>  $DATABASE_URL,
+            'host' => $DATABASE_URL["host"],
+            'port' => $DATABASE_URL["port"],
+            'database' => ltrim($DATABASE_URL["path"], "/"),
+            'username' => $DATABASE_URL["user"],
+            'password' => $DATABASE_URL["pass"],
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,

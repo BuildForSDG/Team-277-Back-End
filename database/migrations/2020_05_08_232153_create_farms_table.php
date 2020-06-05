@@ -24,8 +24,8 @@ class CreateFarmsTable extends Migration
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
             $table->bigInteger('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->bigInteger('measurement_units_id')->unsigned();
-            $table->foreign('measurement_units_id')->references('id')->on('measurement_units')->onDelete('cascade');
+            //$table->bigInteger('measurement_units_id')->unsigned();
+            //$table->foreign('measurement_units_id')->references('id')->on('measurement_units')->onDelete('cascade');
             $table->string('gio_location');            
             $table->float('monthly_income');
             $table->timestamps();
