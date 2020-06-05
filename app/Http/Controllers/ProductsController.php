@@ -27,6 +27,7 @@ class ProductsController extends Controller
 
     public function products()
     {   
+        //Get a paginated list of products(preferably 20)
         $products = DB::table('products')->paginate(20);
         $response = [
             "status" => "success",

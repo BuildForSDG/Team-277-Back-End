@@ -44,6 +44,7 @@ Route::group(['middleware'=>'auth:api','prefix' => 'product'], function($router)
     Route::post('create', 'ProductsController@store');
     Route::put('edit', 'ProductsController@update');
     Route::delete('delete', 'ProductsController@destroy');
+    Route::get('products', 'ProductController@products');
    
 });
    
