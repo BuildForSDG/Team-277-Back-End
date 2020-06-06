@@ -34,7 +34,7 @@ Route::group(['middleware'=>'auth:api','prefix' => 'farm'], function($router){
     Route::delete('delete', 'FarmsController@destroy');
    
 });
-Route::get('products', 'ProductController@products');
+
 
 
 
@@ -48,6 +48,7 @@ Route::group(['middleware'=>'auth:api','prefix' => 'product'], function($router)
     
    
 });
-Route::get('products', 'ProductController@products');
+Route::get('products', 'ProductsController@products');
+Route::post('products/search', 'ProductsController@searchProducts');
    
 

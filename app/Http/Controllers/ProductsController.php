@@ -148,6 +148,33 @@ class ProductsController extends Controller
         
     }
 
+    public function searchProducts(Request $request){
+
+          $this->validate($request, [
+              "name"=> "required",    
+          ]);
+          $productName = $request['name'];
+          $products = DB::table('products')->where('name', $productName)->get();
+          if(count($products) > 0)
+          {
+            $response = [
+              "status" => "success",
+              "message" => "List of all products with the name " . $productName,
+              "data" => $products
+            ];
+            return response()->json($response, 200);
+          }
+          else{
+              $response = [
+                  "status" => "success",
+                  "message" => "Sorry! No product with that name is available currently",
+                  "data" => null
+              ];
+              return response()->json($response, 200);
+          }
+        }
+
+
     
 
     /**
