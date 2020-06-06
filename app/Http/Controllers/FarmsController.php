@@ -49,7 +49,7 @@ class FarmsController extends Controller
             'category_id' => 'required|string'
           ]);
 
-          // first create an addresso f the farm and store the address in the database
+          // first create an address of the farm and store the address in the database
           $address = address::create([
             'street1' => $request->street,
             'suburb'=> $request->suburb,

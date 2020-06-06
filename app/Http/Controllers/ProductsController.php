@@ -6,6 +6,7 @@ use App\products;
 use Auth;
 use App\farms;
 use Illuminate\Http\Request;
+use DB;
 
 class ProductsController extends Controller
 {
@@ -22,6 +23,18 @@ class ProductsController extends Controller
       $farmsForUser = farms::where('user_id', $userId)->with('product')->get();
       
       return response()->json($farmsForUser, 201);
+    }
+
+    public function products()
+    {   
+        //Get a paginated list of products(preferably 20)
+        $products = DB::table('products')->paginate(20);
+        $response = [
+            "status" => "success",
+            "message" => "Retrieved successfully",
+            "data" => $products
+        ];
+        return response()->json($response, 200);
     }
 
    
