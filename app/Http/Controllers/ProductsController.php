@@ -29,12 +29,24 @@ class ProductsController extends Controller
     {   
         //Get a paginated list of products(preferably 20)
         $products = DB::table('products')->paginate(20);
-        $response = [
-            "status" => "success",
-            "message" => "Retrieved successfully",
-            "data" => $products
-        ];
-        return response()->json($response, 200);
+        if(count($products) > 0)
+        {
+            $response = [
+              "status" => "success",
+              "message" => "Products retrieved successfully",
+              "data" => $products
+            ];
+            return response()->json($response, 200);
+        }
+        else
+        {
+            $response = [
+                "status" => "success",
+                "message" => "No products has been posted yet",
+                "data" => null
+            ];
+            return response()->json($response, 200);
+        }
     }
 
    
@@ -135,6 +147,8 @@ class ProductsController extends Controller
 
         
     }
+
+    
 
     /**
      * Remove the specified resource from storage.
