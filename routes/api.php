@@ -23,5 +23,28 @@ Route::group(['middleware'=>'api','prefix' => 'auth'], function($router){
     Route::get('user', 'AuthController@getAuthUser');
    
 });
+
+
+Route::group(['middleware'=>'auth:api','prefix' => 'farm'], function($router){
+
+    Route::get('/', 'FarmsController@index');
+    Route::get('{id}', 'FarmsController@show');
+    Route::post('create', 'FarmsController@store');
+    Route::put('edit', 'FarmsController@update');
+    Route::delete('delete', 'FarmsController@destroy');
+   
+});
+
+
+
+Route::group(['middleware'=>'auth:api','prefix' => 'product'], function($router){
+
+    Route::get('/', 'ProductsController@index');
+    Route::get('{id}', 'ProductsController@show');
+    Route::post('create', 'ProductsController@store');
+    Route::put('edit', 'ProductsController@update');
+    Route::delete('delete', 'ProductsController@destroy');
+   
+});
    
 
