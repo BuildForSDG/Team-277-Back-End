@@ -50,5 +50,13 @@ Route::group(['middleware'=>'auth:api','prefix' => 'product'], function($router)
 });
 Route::get('products', 'ProductsController@products');
 Route::post('products/search', 'ProductsController@searchProducts');
-   
+
+Route::group(['middleware'=>'auth:api','prefix' => 'productreview'], function($router){
+
+    Route::post('create/{id}', 'ProductReviewsController@store');
+    Route::put('edit/{id}', 'ProductReviewsController@update');
+    Route::delete('delete/{id}', 'ProductReviewsController@destroy');
+});
+Route::get('reviews/{id}', 'ProductReviewsController@productReview');
+
 
