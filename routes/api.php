@@ -49,6 +49,8 @@ Route::group(['middleware'=>'auth:api','prefix' => 'product'], function($router)
    
 });
 Route::get('products', 'ProductsController@products');
-Route::post('products/search', 'ProductsController@searchProducts');
+Route::post('products/search', 'ProductsController@filterByNameandCategory');
+Route::post('products/searchcity', 'ProductsController@filterByNameandCity');
+Route::post('products/searchcountry', 'ProductsController@filterByNameandCountry');
    
 

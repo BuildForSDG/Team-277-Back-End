@@ -22,7 +22,7 @@ class products extends Model
     }
     
     /**
-     *  get the Category tha  belong to the farms
+     *  get the Category that  belong to the farms
      */
     public function category()
     {

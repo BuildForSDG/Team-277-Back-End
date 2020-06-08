@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\products;
 use Auth;
 use App\farms;
+use App\category;
+use App\city;
+use App\country;
 use Illuminate\Http\Request;
 use DB;
 
@@ -15,6 +18,16 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function __construct()
+    {
+        // $this->middleware('jwt.auth', ['only' => ['update', 'store', 'destroy']]);
+        $this->middleware('forceJson');
+        // $this->middleware('verifiedAgent', ['only' => ['store']]);
+    }
+
+
+
     public function index()
     {
          // get farmer Id
@@ -148,18 +161,32 @@ class ProductsController extends Controller
         
     }
 
-    public function searchProducts(Request $request){
+    public function filterByNameandCity(Request $request){
 
           $this->validate($request, [
-              "name"=> "required",    
+              "name"=> "required",
+              "city" => "required"  
           ]);
           $productName = $request['name'];
-          $products = DB::table('products')->where('name', $productName)->get();
+          $city = $request['city'];
+          $city = city::where('name', $city)->first();
+          if($city === null){
+            $response = [
+                "message" => "City might have been deleted or it does not exit",
+                "data" => null
+            ];
+            return response()->json($response, 404);
+        }
+          $farm = farms::where("city_id", $city->id)->first();
+          $products = DB::table('products')
+                      ->where('name', $productName)
+                      ->orWhere('farm_id', $farm->id)
+                      ->get();
           if(count($products) > 0)
           {
             $response = [
               "status" => "success",
-              "message" => "List of all products with the name " . $productName,
+              "message" => "Search results",
               "data" => $products
             ];
             return response()->json($response, 200);
@@ -174,8 +201,86 @@ class ProductsController extends Controller
           }
         }
 
+        public function filterByNameandCategory(Request $request){
 
-    
+          $this->validate($request, [
+              "name"=> "required",
+              "category" => "required"  
+          ]);
+          $productName = $request['name'];
+          $productCategory = $request['category'];
+          $category = category::where("name", $productCategory)->first();
+          // dd($category);
+          if($category === null){
+            $response = [
+                "message" => "Category might have been deleted or it does not exit",
+                "data" => null
+            ];
+            return response()->json($response, 404);
+        }
+          $products = DB::table('products')
+                      ->where('name', $productName)
+                      ->orWhere('category_id', $category->id)
+                      ->get();
+          if(count($products) > 0)
+          {
+            $response = [
+              "status" => "success",
+              "message" => "Search results",
+              "data" => $products
+            ];
+            return response()->json($response, 200);
+          }
+          else{
+              $response = [
+                  "status" => "success",
+                  "message" => "Sorry! No product with that name is available currently",
+                  "data" => null
+              ];
+              return response()->json($response, 200);
+          }
+        }
+
+        public function filterByNameandCountry(Request $request){
+
+            $this->validate($request, [
+                "name"=> "required",
+                "country" => "required"  
+            ]);
+            $productName = $request['name'];
+            $country = $request['country'];
+            $country = country::where('name', $country)->first();
+            if($country === null){
+            $response = [
+                "message" => "Country might have been deleted or it does not exit",
+                "data" => null
+            ];
+            return response()->json($response, 404);
+        }
+            $farm = farms::where("country_id", $country->id)->first();
+            $products = DB::table('products')
+                        ->where('name', $productName)
+                        ->orWhere('farm_id', $farm->id)
+                        ->get();
+            if(count($products) > 0)
+            {
+              $response = [
+                "status" => "success",
+                "message" => "Search results",
+                "data" => $products
+              ];
+              return response()->json($response, 200);
+            }
+            else{
+                $response = [
+                    "status" => "success",
+                    "message" => "Sorry! No search results",
+                    "data" => null
+                ];
+                return response()->json($response, 200);
+            }
+        }
+
 
     /**
      * Remove the specified resource from storage.
