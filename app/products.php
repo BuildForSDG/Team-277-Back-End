@@ -36,4 +36,9 @@ class products extends Model
     {
         return $this->belongsTo('App\measurement_unit', 'id');
     }
+
+    public function product_reviews(){
+        return $this->hasMany('App\product_reviews');
+    }
+
 }
